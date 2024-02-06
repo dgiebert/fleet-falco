@@ -38,20 +38,21 @@ helm:
       rules-api-access.yaml: |-
         - macro: user_known_contact_k8s_api_server_activities
           condition: >
-            ((k8s.ns.name = "cattle-system" and proc.exepath = "/usr/bin/agent")
-            or (k8s.ns.name = "local-path-storage" and container.name = "local-path-provisioner"))
-            or (k8s.ns.name = "kubewarden" and (container.name = "manager" or
-                                                container.name = "post-install-job" or
-                                                container.name = "policy-reporter"))
-            or (k8s.ns.name = "cattle-monitoring-system" and (container.name = "grafana-sc-dashboard" or
-                                                              container.name = "grafana-sc-datasources" or
-                                                              k8s.pod.name startswith "rancher-monitoring-patch" or
-                                                              k8s.pod.name startswith "rancher-monitoring-upgrade" or
-                                                              k8s.pod.name startswith "rancher-monitoring-crd-create" or
-                                                              k8s.pod.name startswith "rancher-monitoring-admission-patch" or))
-            or (k8s.ns.name = "cattle-system" 
-                and container.name = "proxy"
-                and proc.name = "kubectl")
+            (
+              (k8s.ns.name = "cattle-system" and (proc.exepath = "/usr/bin/agent" or
+                                                 (container.name = "proxy" and proc.name = "kubectl")))
+              or (k8s.ns.name = "local-path-storage" and container.name = "local-path-provisioner"))
+              or (k8s.ns.name = "kubewarden" and (container.name = "manager" or
+                                                  container.name = "post-install-job" or
+                                                  container.name = "policy-reporter"))
+              or (k8s.ns.name = "cattle-monitoring-system" and (container.name = "grafana-sc-dashboard" or
+                                                                container.name = "grafana-sc-datasources" or
+                                                                k8s.pod.name startswith "rancher-monitoring-patch" or
+                                                                k8s.pod.name startswith "rancher-monitoring-upgrade" or
+                                                                k8s.pod.name startswith "rancher-monitoring-crd-create" or
+                                                                k8s.pod.name startswith "rancher-monitoring-admission-patch")
+            )
+            
       rules-kubevip.yaml: |-
         - list: user_known_packet_socket_binaries
           append: yes

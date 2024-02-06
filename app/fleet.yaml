@@ -30,7 +30,7 @@ helm:
         enabled: true
         socket: /var/run/k3s/containerd/containerd.sock
       kubernetes:
-        enabled: true
+        enabled: false
       crio:
         enabled: false
       docker:

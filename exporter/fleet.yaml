@@ -1,0 +1,19 @@
+
+defaultNamespace: falco-exporter
+
+labels:
+  app: falco-exporter
+
+# Custom helm options
+helm:
+  releaseName: falco-exporter
+  chart: falco-exporter
+  repo: https://falcosecurity.github.io/charts
+  version: 0.9.9
+  values:
+    grafanaDashboard:
+      enabled: true
+      namespace: cattle-dashboards
+      prometheusDatasourceName: Prometheus
+    serviceMonitor:
+      enabled: true

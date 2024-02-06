@@ -15,6 +15,16 @@ helm:
   repo: https://falcosecurity.github.io/charts
   version: 4.1.1
   values:
+    falcosidekick:
+      enabled: true
+      webui:
+        enabled: true
+        disableauth: true
+        replicaCount: 1
+        ingress:
+          enabled: true
+        redis:
+          storageEnabled: false
     collectors:
       kubernetes:
         enabled: true
@@ -23,11 +33,12 @@ helm:
         - macro: user_known_contact_k8s_api_server_activities
           condition: >
             ((k8s.ns.name = "cattle-system" and proc.exepath = "/usr/bin/agent")
+            or (k8s.ns.name = "falco" and container.name = "k8s-metacollector"))
             or (k8s.ns.name = "cattle-monitoring-system" and (container.name = "grafana-sc-dashboard" or 
                                                               container.name = "grafana-sc-datasources"))
             or (k8s.ns.name = "cattle-system" 
                 and container.name = "proxy"
-                and proc.name = "kubectl"))
+                and proc.name = "kubectl")
       rules-kubevip.yaml: |-
         - list: user_known_packet_socket_binaries
           append: yes

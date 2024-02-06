@@ -26,8 +26,15 @@ helm:
         redis:
           storageEnabled: false
     collectors:
+      containerd:
+        enabled: true
+        socket: /var/run/k3s/containerd/containerd.sock
       kubernetes:
         enabled: true
+      crio:
+        enabled: false
+      docker:
+        enabled: false
     customRules:
       rules-api-access.yaml: |-
         - macro: user_known_contact_k8s_api_server_activities

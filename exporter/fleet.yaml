@@ -17,3 +17,11 @@ helm:
       prometheusDatasourceName: Prometheus
     serviceMonitor:
       enabled: true
+
+dependsOn:
+  - selector:
+      matchLabels:
+        app: falco
+  - selector:
+      matchLabels:
+        app: rancher-monitoring

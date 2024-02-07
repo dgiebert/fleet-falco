@@ -47,7 +47,8 @@ helm:
         - macro: user_known_contact_k8s_api_server_activities
           condition: >
             (
-              (k8s.ns.name = "cattle-system" and (proc.exepath = "/usr/bin/agent" or (container.name = "proxy" and proc.name = "kubectl")))
+              (k8s.ns.name = "cattle-system" and proc.exepath = "/usr/bin/agent")
+              or (k8s.ns.name = "cattle-system" and container.name = "proxy" and proc.name = "kubectl")
               or (k8s.ns.name = "local-path-storage" and k8s.pod.name startswith "local-path-provisioner" and container.name = "local-path-provisioner")
             )
       rules-kubevip.yaml: |-
@@ -55,6 +56,7 @@ helm:
           append: yes
           items: ["kube-vip"]
       rules-applications.yaml: |-
+        # Rancher Monitoring
         - macro: user_known_contact_k8s_api_server_applications
           condition: >
               k8s.ns.name = "cattle-monitoring-system" and (container.name in (grafana-sc-dashboard, grafana-sc-datasources) or
@@ -62,12 +64,16 @@ helm:
                                                                 k8s.pod.name startswith "rancher-monitoring-upgrade" or
                                                                 k8s.pod.name startswith "rancher-monitoring-crd-create" or
                                                                 k8s.pod.name startswith "rancher-monitoring-admission-patch")
+        # Kubewarden
         - macro: user_known_contact_k8s_api_server_applications
           condition: >
               or (k8s.ns.name = "kubewarden" and container.name in (manager, post-install-job, audit-scanner, policy-reporter))
-              or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.cmdline startswith "patroni" or 
-                                                                                     proc.cmdline startswith "postgres" or
-                                                                                     proc.pcmdline startswith "postgres"))
+          override:
+            condition: append
+        # Postgres Operator
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: >
+              or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.pname = "postgres" or proc.name = "patroni"))
           override:
             condition: append
     driver:

@@ -66,7 +66,8 @@ helm:
           condition: >
               or (k8s.ns.name = "kubewarden" and container.name in (manager, post-install-job, audit-scanner, policy-reporter))
               or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.cmdline startswith "patroni" or 
-                                                                                     proc.cmdline startswith "postgres"))
+                                                                                     proc.cmdline startswith "postgres" or
+                                                                                     proc.pcmdline startswith "postgres"))
           override:
             condition: append
     driver:

@@ -36,27 +36,35 @@ helm:
         enabled: false
     customRules:
       rules-api-access.yaml: |-
+        # Add a custom additional application rule that is wrapped so we can use append easily
+        - rule: Contact K8S API Server From Container
+          condition: >
+            and not (user_known_contact_k8s_api_server_applications)
+          override:
+            items: append
         - macro: user_known_contact_k8s_api_server_activities
           condition: >
-            (
-              (k8s.ns.name = "cattle-system" and (proc.exepath = "/usr/bin/agent" or
-                                                 (container.name = "proxy" and proc.name = "kubectl")))
-              or (k8s.ns.name = "local-path-storage" and container.name = "local-path-provisioner"))
-              or (k8s.ns.name = "kubewarden" and (container.name = "manager" or
-                                                  container.name = "post-install-job" or
-                                                  container.name = "policy-reporter"))
-              or (k8s.ns.name = "cattle-monitoring-system" and (container.name = "grafana-sc-dashboard" or
-                                                                container.name = "grafana-sc-datasources" or
-                                                                k8s.pod.name startswith "rancher-monitoring-patch" or
-                                                                k8s.pod.name startswith "rancher-monitoring-upgrade" or
-                                                                k8s.pod.name startswith "rancher-monitoring-crd-create" or
-                                                                k8s.pod.name startswith "rancher-monitoring-admission-patch")
-            )
-            
+            (k8s.ns.name = "cattle-system" and (proc.exepath = "/usr/bin/agent" or (container.name = "proxy" and proc.name = "kubectl")))
       rules-kubevip.yaml: |-
         - list: user_known_packet_socket_binaries
           append: yes
           items: ["kube-vip"]
+      rules-applications.yaml: |-
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: >
+              (k8s.ns.name = "local-path-storage" and container.name = "local-path-provisioner"))
+              or (k8s.ns.name = "cattle-monitoring-system" and (container.name in ("grafana-sc-dashboard", "grafana-sc-datasources") or
+                                                                k8s.pod.name startswith "rancher-monitoring-patch" or
+                                                                k8s.pod.name startswith "rancher-monitoring-upgrade" or
+                                                                k8s.pod.name startswith "rancher-monitoring-crd-create" or
+                                                                k8s.pod.name startswith "rancher-monitoring-admission-patch")
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: >
+              or (k8s.ns.name = "kubewarden" and container.name in ("manager", "post-install-job", "audit-scanner", "policy-reporter"))
+              or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.cmdline startswith "patroni" or 
+                                                                                     proc.cmdline startswith "postgres"))
+          override:
+            condition: append
     driver:
       kind: ebpf
     falco:

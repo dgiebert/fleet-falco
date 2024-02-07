@@ -37,6 +37,8 @@ helm:
     customRules:
       rules-api-access.yaml: |-
         # Add a custom additional application rule that is wrapped so we can use append easily
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: (never_true)
         - rule: Contact K8S API Server From Container
           condition: >
             and not (user_known_contact_k8s_api_server_applications)

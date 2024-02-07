@@ -55,14 +55,14 @@ helm:
         - macro: user_known_contact_k8s_api_server_applications
           condition: >
               (k8s.ns.name = "local-path-storage" and container.name = "local-path-provisioner"))
-              or (k8s.ns.name = "cattle-monitoring-system" and (container.name in ("grafana-sc-dashboard", "grafana-sc-datasources") or
+              or (k8s.ns.name = "cattle-monitoring-system" and (container.name in (grafana-sc-dashboard, grafana-sc-datasources) or
                                                                 k8s.pod.name startswith "rancher-monitoring-patch" or
                                                                 k8s.pod.name startswith "rancher-monitoring-upgrade" or
                                                                 k8s.pod.name startswith "rancher-monitoring-crd-create" or
                                                                 k8s.pod.name startswith "rancher-monitoring-admission-patch")
         - macro: user_known_contact_k8s_api_server_applications
           condition: >
-              or (k8s.ns.name = "kubewarden" and container.name in ("manager", "post-install-job", "audit-scanner", "policy-reporter"))
+              or (k8s.ns.name = "kubewarden" and container.name in (manager, post-install-job, audit-scanner, policy-reporter))
               or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.cmdline startswith "patroni" or 
                                                                                      proc.cmdline startswith "postgres"))
           override:

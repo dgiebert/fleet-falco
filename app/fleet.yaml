@@ -41,7 +41,7 @@ helm:
           condition: >
             and not (user_known_contact_k8s_api_server_applications)
           override:
-            items: append
+            condition: append
         - macro: user_known_contact_k8s_api_server_activities
           condition: >
             (k8s.ns.name = "cattle-system" and (proc.exepath = "/usr/bin/agent" or (container.name = "proxy" and proc.name = "kubectl")))

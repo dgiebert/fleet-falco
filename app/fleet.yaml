@@ -91,6 +91,13 @@ helm:
               or (k8s.ns.name = "loki" and k8s.pod.name startswith "loki-backend")
           override:
             condition: append
+        # Cert-Manager
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: >
+              or (k8s.pod.name startswith "cert-manager" and container.image.repository = "quay.io/jetstack/cert-manager-controller")
+          override:
+            condition: append
+
     driver:
       kind: ebpf
     falco:

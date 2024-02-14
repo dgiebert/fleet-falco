@@ -76,6 +76,12 @@ helm:
               or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.pname = "postgres" or proc.name = "patroni"))
           override:
             condition: append
+        # Loki
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: >
+              or (k8s.ns.name = "loki" and k8s.pod.name startswith "loki-backend")
+          override:
+            condition: append
     driver:
       kind: ebpf
     falco:

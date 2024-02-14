@@ -80,7 +80,9 @@ helm:
         # Postgres Operator
         - macro: user_known_contact_k8s_api_server_applications
           condition: >
-              or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.pname = "postgres" or proc.name = "patroni"))
+              or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.pname = "postgres" 
+                                                                                     or proc.name = "patroni" 
+                                                                                     or proc.pcmdline = "postgres"))
           override:
             condition: append
         # Loki

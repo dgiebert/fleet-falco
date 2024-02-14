@@ -55,7 +55,7 @@ helm:
         - list: user_known_packet_socket_binaries
           items: ["kube-vip"]
           override:
-            condition: append
+            items: append
       rules-applications.yaml: |-
         # Rancher Monitoring
         - macro: user_known_contact_k8s_api_server_applications

@@ -24,6 +24,9 @@ helm:
           enabled: true
         redis:
           storageEnabled: false
+      config:
+        loki:
+          hostport: http://loki-gateway.loki.svc.cluster.local
     collectors:
       containerd:
         enabled: true

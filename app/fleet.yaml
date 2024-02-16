@@ -78,7 +78,8 @@ helm:
           condition: >
               or (container.image.repository startswith "ghcr.io/zalando/spilo" and (proc.pname = "postgres" 
                                                                                      or proc.name = "patroni" 
-                                                                                     or proc.pcmdline = "postgres"))
+                                                                                     or proc.pcmdline = "postgres"
+                                                                                     or proc.aname[2] = "postgres"))
           override:
             condition: append
         # Loki

@@ -16,14 +16,6 @@ helm:
   values:
     falcosidekick:
       enabled: true
-      webui:
-        enabled: true
-        disableauth: true
-        replicaCount: 1
-        ingress:
-          enabled: true
-        redis:
-          storageEnabled: false
       config:
         loki:
           hostport: http://loki-gateway.loki.svc.cluster.local

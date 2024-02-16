@@ -64,7 +64,7 @@ helm:
         - macro: user_known_contact_k8s_api_server_applications
           condition: >
               or (k8s.ns.name = "cattle-logging-system" and k8s.pod.name startswith "rancher-logging-root-fluentbit" and (proc.name = "flb-pipeline" or 
-                                                                                                                          process = "fluent-bit"))
+                                                                                                                          proc.name = "fluent-bit"))
           override:
             condition: append
         # Kubewarden

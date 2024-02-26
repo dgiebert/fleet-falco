@@ -73,6 +73,11 @@ helm:
               or (k8s.ns.name = "kubewarden" and container.name in (manager, post-install-job, audit-scanner, policy-reporter))
           override:
             condition: append
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: >
+              or (k8s.ns.name = "open-telemetry" and container.name in (manager))
+          override:
+            condition: append
         # Postgres Operator
         - macro: user_known_contact_k8s_api_server_applications
           condition: >

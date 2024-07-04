@@ -9,7 +9,7 @@ helm:
   releaseName: falco-exporter
   chart: falco-exporter
   repo: https://falcosecurity.github.io/charts
-  version: 0.9.11
+  version: 0.11.0
   values:
     grafanaDashboard:
       enabled: true

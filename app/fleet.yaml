@@ -12,13 +12,15 @@ helm:
   releaseName: falco
   chart: falco
   repo: https://falcosecurity.github.io/charts
-  version: 4.7.0
+  version: 4.7.2
   values:
     falcosidekick:
       enabled: true
       config:
         loki:
           hostport: http://loki-gateway.loki.svc.cluster.local
+      webui:
+        enabled: true
     collectors:
       containerd:
         enabled: true
@@ -60,11 +62,15 @@ helm:
                                                                 k8s.pod.name startswith "rancher-monitoring-upgrade" or
                                                                 k8s.pod.name startswith "rancher-monitoring-crd-create" or
                                                                 k8s.pod.name startswith "rancher-monitoring-admission-patch"))
-              or
-              (k8s.ns.name = "longhorn-system" and (k8s.pod.name startswith "longhorn-manager" or
-                                                    k8s.pod.name startswith "csi" or 
-                                                    k8s.pod.name startswith "fstrim" or
-                                                    k8s.pod.name startswith "snapshots")
+        # Longhorn
+        - macro: user_known_contact_k8s_api_server_applications
+          condition: >
+              or (k8s.ns.name = "longhorn-system" and (k8s.pod.name startswith "longhorn-manager" or
+                                                        k8s.pod.name startswith "csi" or 
+                                                        k8s.pod.name startswith "fstrim" or
+                                                        k8s.pod.name startswith "snapshots")
+          override:
+            condition: append
         # Rancher Logging
         - macro: user_known_contact_k8s_api_server_applications
           condition: >

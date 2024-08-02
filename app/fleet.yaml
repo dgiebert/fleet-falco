@@ -68,7 +68,7 @@ helm:
               or (k8s.ns.name = "longhorn-system" and (k8s.pod.name startswith "longhorn-manager" or
                                                         k8s.pod.name startswith "csi" or 
                                                         k8s.pod.name startswith "fstrim" or
-                                                        k8s.pod.name startswith "snapshots")
+                                                        k8s.pod.name startswith "snapshots"))
           override:
             condition: append
         # Rancher Logging

@@ -16,6 +16,8 @@ helm:
   values:
     falcosidekick:
       enabled: true
+      webui:
+        enabled: true
     collectors:
       containerd:
         enabled: true

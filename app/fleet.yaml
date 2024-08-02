@@ -16,9 +16,9 @@ helm:
   values:
     falcosidekick:
       enabled: true
-      config:
-        loki:
-          hostport: http://loki-gateway.loki.svc.cluster.local
+      #config:
+      #  loki:
+      #    hostport: http://loki-gateway.loki.svc.cluster.local
       webui:
         enabled: true
     collectors:

@@ -18,6 +18,11 @@ helm:
       enabled: true
       webui:
         enabled: true
+      prometheusRules:
+        enabled: true
+      grafana:
+        dashboards:
+          enabled: true
     collectors:
       containerd:
         enabled: true
@@ -28,6 +33,11 @@ helm:
         enabled: false
       docker:
         enabled: false
+    metrics:
+      enabled: true
+    grafana:
+      dashboards:
+        enabled: true
     customRules:
       rules-api-access.yaml: |-
         # Add a custom additional application rule that is wrapped so we can use append easily
@@ -107,6 +117,3 @@ helm:
               or (k8s.pod.name startswith "cert-manager" and container.image.repository = "quay.io/jetstack/cert-manager-controller")
           override:
             condition: append
-
-    driver:
-      kind: auto

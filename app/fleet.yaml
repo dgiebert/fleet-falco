@@ -23,6 +23,9 @@ helm:
       grafana:
         dashboards:
           enabled: true
+          configMaps:
+            falcosidekick:
+              namespace: "cattle-dashboards"
     collectors:
       containerd:
         enabled: true
